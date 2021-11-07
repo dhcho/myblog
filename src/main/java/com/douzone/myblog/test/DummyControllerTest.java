@@ -96,7 +96,7 @@ public class DummyControllerTest {
 		User user = userRepository.findById(id).orElseThrow(new Supplier<IllegalArgumentException>() {
 			@Override
 			public IllegalArgumentException get() {
-				return new IllegalArgumentException("해당 사용자는 없습니다. id : "+id);
+				return new IllegalArgumentException("해당 사용자가 없습니다. id : "+id);
 			}
 		});
 		
