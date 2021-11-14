@@ -2,6 +2,7 @@
 <%@ include file="../layout/header.jsp"%>
 
 <div class="container">
+
 	<form action="/auth/loginProc" method="post">
 		<div class="form-group">
 			<label for="username">Username</label> 
@@ -15,7 +16,7 @@
 		
 		<button id="btn-login" class="btn btn-primary">로그인</button>
 	</form>
-
+	
 </div>
 
 <%@ include file="../layout/footer.jsp"%>
