@@ -6,11 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.douzone.myblog.controller.api.ReplySaveRequestDto;
 import com.douzone.myblog.model.Board;
 import com.douzone.myblog.model.Reply;
 import com.douzone.myblog.model.User;
 import com.douzone.myblog.repository.BoardRepository;
 import com.douzone.myblog.repository.ReplyRepository;
+import com.douzone.myblog.repository.UserRepository;
 
 @Service
 public class BoardService {
@@ -20,6 +22,9 @@ public class BoardService {
 	
 	@Autowired
 	private ReplyRepository replyRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Transactional
 	public void write(Board board, User user) { // title, content
@@ -58,14 +63,21 @@ public class BoardService {
 	}
 	
 	@Transactional
-	public void replyWrite(User user, int boardId, Reply requestReply) {
-		Board board = boardRepository.findById(boardId).orElseThrow(()->{
+	public void replyWrite(ReplySaveRequestDto replySaveRequestDto) {
+		User user = userRepository.findById(replySaveRequestDto.getUserId()).orElseThrow(()->{
+			return new IllegalArgumentException("댓글 쓰기 실패 : 유저 ID를 찾을 수 업습니다.");
+		}); // 영속화 완료
+		
+		Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()->{
 			return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 ID를 찾을 수 업습니다.");
 		}); // 영속화 완료
 		
-		requestReply.setUser(user);
-		requestReply.setBoard(board);
+		Reply reply = Reply.builder()
+				.user(user)
+				.board(board)
+				.content(replySaveRequestDto.getContent())
+				.build();
 		
-		replyRepository.save(requestReply);
+		replyRepository.save(reply);
 	}
 }
