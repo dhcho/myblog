@@ -1,6 +1,5 @@
 package com.douzone.myblog.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,19 +10,26 @@ import com.douzone.myblog.model.Board;
 import com.douzone.myblog.model.User;
 import com.douzone.myblog.repository.BoardRepository;
 import com.douzone.myblog.repository.ReplyRepository;
-import com.douzone.myblog.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
+	
+	private final BoardRepository boardRepository;
+	private final ReplyRepository replyRepository;
+	
+//	public BoardService(BoardRepository bRepo, ReplyRepository rRepo) {
+//		this.boardRepository = bRepo;
+//		this.replyRepository = rRepo;
+//	}
 
-	@Autowired
-	private BoardRepository boardRepository;
-	
-	@Autowired
-	private ReplyRepository replyRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
+//	@Autowired
+//	private BoardRepository boardRepository;
+//	
+//	@Autowired
+//	private ReplyRepository replyRepository;
 	
 	@Transactional
 	public void write(Board board, User user) { // title, content
